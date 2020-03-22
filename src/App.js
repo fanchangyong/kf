@@ -99,7 +99,7 @@ function App() {
 
   return (
     <div className="App">
-      <input type="file" onChange={handleFileChange} />
+      <input type="file" onChange={handleFileChange} accept=".xls,.xlsx,.csv" />
       <input placeholder="请输入查询条件" onChange={handleQueryChange} value={query} />
       <h2>查询结果：</h2>
       <Table columns={columns} dataSource={result} pagination={false} />
