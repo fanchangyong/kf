@@ -74,21 +74,26 @@ function App() {
         };
       });
       setData(data);
+      setResult(data);
     }
     reader.readAsArrayBuffer(file);
   }
 
   function handleQueryChange(e) {
+    const query = e.target.value;
     setQuery(e.target.value);
-  }
-
-  function handleQuery() {
+    if (!query) {
+      setResult(data);
+      return;
+    }
     if (query && data) {
-      const result = data.find(d => d.xinghao === query);
-      if (result) {
-        console.log('result: ', result)
-        setResult([result])
-      }
+      let results = [];
+      data.forEach(d => {
+        if (d.xinghao && d.xinghao.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+          results.push(d);
+        }
+      });
+      setResult(results);
     }
   }
 
@@ -96,11 +101,8 @@ function App() {
     <div className="App">
       <input type="file" onChange={handleFileChange} />
       <input placeholder="请输入查询条件" onChange={handleQueryChange} value={query} />
-      <button onClick={handleQuery}>
-        查询
-      </button>
       <h2>查询结果：</h2>
-      <Table columns={columns} dataSource={result} />
+      <Table columns={columns} dataSource={result} pagination={false} />
     </div>
   );
 }
